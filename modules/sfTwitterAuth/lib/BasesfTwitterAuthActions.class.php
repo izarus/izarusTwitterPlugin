@@ -3,13 +3,20 @@
 
 class BasesfTwitterAuthActions extends sfActions
 {
+  public function executeSigninSuccess(sfWebRequest $request)
+  {
+    var_dump($_POST); exit;
+  }
+
   public function executeSignin(sfWebRequest $request)
   {
     $twitter = new sfTwitter();
 
-    $tokens = $twitter->post('oauth/request_token',array('oauth_callback',$request->getUri()));
-
-    var_dump($tokens); exit;
+    $twitter->getRequestToken();
+    $url = $twitter->getAuthorizeUrl();
+    if ($url) {
+      $this->redirect($url);
+    }
 
     /*
 
