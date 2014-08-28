@@ -1,3 +1,0 @@
-[submodule "lib/vendor/TwitterOAuth"]
-	path = lib/vendor/TwitterOAuth
-	url = https://github.com/ricardoper/TwitterOAuth.git

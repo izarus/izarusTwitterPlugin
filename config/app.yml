@@ -1,0 +1,8 @@
+all:
+  twitter:
+    consumer_key:               XXX
+    consumer_secret:            XXX
+    oauth_token:                XXX
+    oauth_token_secret:         XXX
+    after_signin_url:           '@homepage'
+    after_signout_url:          '@homepage'
