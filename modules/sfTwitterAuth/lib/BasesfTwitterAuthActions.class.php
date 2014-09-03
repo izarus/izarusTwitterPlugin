@@ -3,16 +3,33 @@
 
 class BasesfTwitterAuthActions extends sfActions
 {
-  public function executeSigninSuccess(sfWebRequest $request)
+  public function executeAuth(sfWebRequest $request)
   {
-    var_dump($_POST); exit;
+    $oauth_verifier = $request->getParameter('oauth_verifier');
+
+    $twitter = new sfTwitter($this->getUser()->getFlash('oauth_token',null),$this->getUser()->getFlash('oauth_token_secret',null));
+
+    $data = $twitter->getAccessToken($oauth_verifier);
+    if ($data) {
+
+      $user_data = $twitter->get('account/verify_credentials');
+
+      var_dump($user_data->name);
+    }
+
+    return sfView::NONE;
+
   }
 
   public function executeSignin(sfWebRequest $request)
   {
     $twitter = new sfTwitter();
 
-    $twitter->getRequestToken();
+    $data = $twitter->getRequestToken($this->getContext()->getRouting()->generate('twitter_auth',array(),true));
+
+    $this->getUser()->setFlash('oauth_token',$data['oauth_token']);
+    $this->getUser()->setFlash('oauth_token_secret',$data['oauth_token_secret']);
+
     $url = $twitter->getAuthorizeUrl();
     if ($url) {
       $this->redirect($url);
